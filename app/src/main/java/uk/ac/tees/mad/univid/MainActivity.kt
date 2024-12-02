@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import dagger.hilt.android.AndroidEntryPoint
+import uk.ac.tees.mad.univid.screens.SplashScreen
 import uk.ac.tees.mad.univid.ui.theme.PetCatTheme
 
 @AndroidEntryPoint
@@ -21,7 +22,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             PetCatTheme {
-
+                SplashScreen()
             }
         }
     }
