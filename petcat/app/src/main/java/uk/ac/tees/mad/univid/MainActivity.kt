@@ -78,7 +78,7 @@ fun AppNavigation() {
         ) { backStackEntry ->
             val petItemJson = backStackEntry.arguments?.getString("petItem")
             val petItem = gson.fromJson(Uri.decode(petItemJson), PetItem::class.java)
-            DetailScreen(petItem)
+            DetailScreen(petItem, navController)
         }
         composable(AppNavigationComponent.FavouriteScreen.route) {
             FavouriteScreen(navController, vm)
