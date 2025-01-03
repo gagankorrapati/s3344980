@@ -104,4 +104,8 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    fun saveToDB(){
+
+    }
+
 }
