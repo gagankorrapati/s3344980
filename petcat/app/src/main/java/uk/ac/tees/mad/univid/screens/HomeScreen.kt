@@ -31,6 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import uk.ac.tees.mad.univid.AppNavigationComponent
 import uk.ac.tees.mad.univid.MainViewModel
 import uk.ac.tees.mad.univid.ui.theme.poppins
 
@@ -55,7 +56,7 @@ fun HomeScreen(vm: MainViewModel, navController: NavController) {
 
                     },
                         onItemClick = {
-
+                            navController.navigate(AppNavigationComponent.DetailScreen.createRoute(item))
                         }
                     )
                 }
