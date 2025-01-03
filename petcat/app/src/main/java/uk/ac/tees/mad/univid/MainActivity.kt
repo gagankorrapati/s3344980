@@ -67,7 +67,7 @@ fun AppNavigation(){
             FavouriteScreen(navController, vm)
         }
         composable(AppNavigationComponent.ProfileScreen.route) {
-            ProfileScreen()
+            ProfileScreen(navController, vm)
         }
     }
 }
