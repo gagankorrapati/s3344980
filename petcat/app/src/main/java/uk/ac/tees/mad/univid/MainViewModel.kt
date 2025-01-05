@@ -20,6 +20,7 @@ import kotlinx.coroutines.launch
 import uk.ac.tees.mad.univid.data.local.PetItemDB
 import uk.ac.tees.mad.univid.data.remote.PetItems
 import uk.ac.tees.mad.univid.model.PetItem
+import uk.ac.tees.mad.univid.model.User
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,6 +32,9 @@ class MainViewModel @Inject constructor(
 
 
     var petItems by mutableStateOf<List<PetItem>>(emptyList())
+        private set
+
+    var userData by mutableStateOf<User?>(null)
         private set
 
     val petItemsFlow = MutableStateFlow<List<PetItemDB>>(emptyList())
@@ -52,6 +56,7 @@ class MainViewModel @Inject constructor(
         auth.createUserWithEmailAndPassword(email,password).addOnSuccessListener {
             firestore.collection("users").document(it.user!!.uid).set(
                 hashMapOf(
+                    "image" to "",
                     "name" to name,
                     "email" to email,
                     "password" to password
@@ -91,6 +96,13 @@ class MainViewModel @Inject constructor(
 
     fun getUserData(uid: String){
         firestore.collection("users").document(uid).get().addOnSuccessListener {
+            val user = it.data
+            userData = User(
+                image = user?.get("image").toString(),
+                name = user?.get("name").toString(),
+                email = user?.get("email").toString(),
+                password = user?.get("password").toString()
+            )
             Log.d("user", "user data fetched successfully")
         }.addOnFailureListener {
             Log.d("user", "user data fetched failed")

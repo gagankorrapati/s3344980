@@ -65,7 +65,7 @@ fun OfflineDetailScreen(petItemDB: PetItemDB,navController: NavController,vm: Ma
                     .size(35.dp)
                     .background(Color.White)
                     .clickable {
-                        navigateWithoutBackStack(navController, AppNavigationComponent.HomeScreen)
+                        navigateWithoutBackStack(navController, AppNavigationComponent.FavouriteScreen)
                     }
             )
 
@@ -102,7 +102,9 @@ fun OfflineDetailScreen(petItemDB: PetItemDB,navController: NavController,vm: Ma
             fontWeight = FontWeight.SemiBold, fontSize = 15.sp)
 
         Spacer(modifier = Modifier.weight(1f))
-        Button(onClick = { vm.deletePet(petItemDB) }, colors = ButtonDefaults.buttonColors(Color(0xFF81B6E7)), modifier = Modifier.fillMaxWidth()) {
+        Button(onClick = { vm.deletePet(petItemDB)
+                         navigateWithoutBackStack(navController, AppNavigationComponent.FavouriteScreen)
+        }, colors = ButtonDefaults.buttonColors(Color.Red), modifier = Modifier.fillMaxWidth()) {
             Text(text = "Remove From Favorites")
         }
     }
