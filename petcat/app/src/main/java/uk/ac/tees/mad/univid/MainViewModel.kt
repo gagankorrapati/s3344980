@@ -1,16 +1,19 @@
 package uk.ac.tees.mad.univid
 
 import android.content.Context
+import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -27,6 +30,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val auth : FirebaseAuth,
     private val firestore : FirebaseFirestore,
+    private val storage : FirebaseStorage,
     private val repository: AppRepository
 ) : ViewModel() {
 
@@ -43,7 +47,7 @@ class MainViewModel @Inject constructor(
     val isSignedIn = mutableStateOf(false)
 
     init {
-        if(auth.currentUser != null){
+        if (auth.currentUser != null) {
             isSignedIn.value = true
             getUserData(auth.currentUser!!.uid)
         }
@@ -51,9 +55,9 @@ class MainViewModel @Inject constructor(
     }
 
 
-    fun signUp(context : Context, name : String, email : String, password : String){
+    fun signUp(context: Context, name: String, email: String, password: String) {
         isLoading.value = true
-        auth.createUserWithEmailAndPassword(email,password).addOnSuccessListener {
+        auth.createUserWithEmailAndPassword(email, password).addOnSuccessListener {
             firestore.collection("users").document(it.user!!.uid).set(
                 hashMapOf(
                     "image" to "",
@@ -79,9 +83,9 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun logIn(context: Context, email: String, password: String){
+    fun logIn(context: Context, email: String, password: String) {
         isLoading.value = true
-        auth.signInWithEmailAndPassword(email,password).addOnSuccessListener {
+        auth.signInWithEmailAndPassword(email, password).addOnSuccessListener {
             isLoading.value = false
             Log.d("user", "user logged in successfully")
             Toast.makeText(context, "Log In successful", Toast.LENGTH_SHORT).show()
@@ -94,7 +98,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun getUserData(uid: String){
+    fun getUserData(uid: String) {
         firestore.collection("users").document(uid).get().addOnSuccessListener {
             val user = it.data
             userData = User(
@@ -152,19 +156,48 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun getAllFromDb(){
+    fun getAllFromDb() {
         viewModelScope.launch {
-            repository.getAllFromDatabase().collect{
+            repository.getAllFromDatabase().collect {
                 Log.d("Database", "Collected ${it.size} items from DB")
                 petItemsFlow.value = it
             }
         }
     }
 
-    fun deletePet(pet : PetItemDB){
+    fun deletePet(pet: PetItemDB) {
         viewModelScope.launch {
             repository.deleteFromDatabase(pet)
         }
     }
 
+    fun uploadProfileImage(context : Context,imageUri: Uri) {
+        isLoading.value = true
+        val storageRef = storage.reference
+        val imageRef = storageRef.child("profile_images/${auth.currentUser?.uid}")
+        val uploadTask = imageRef.putFile(imageUri)
+        uploadTask.addOnSuccessListener {
+            imageRef.downloadUrl.addOnSuccessListener { uri ->
+                val imageUrl = uri.toString()
+                firestore.collection("users").document(auth.currentUser!!.uid)
+                    .update("image", imageUrl)
+                isLoading.value = false
+                getUserData(uid = auth.currentUser!!.uid)
+            }
+        }.addOnFailureListener {
+            isLoading.value = false
+            Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun editName(context : Context, name: String){
+        firestore.collection("users").document(auth.currentUser!!.uid)
+            .update("name", name).addOnSuccessListener {
+                isLoading.value = false
+            }
+            .addOnFailureListener {
+                isLoading.value = false
+                Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+            }
+    }
 }
