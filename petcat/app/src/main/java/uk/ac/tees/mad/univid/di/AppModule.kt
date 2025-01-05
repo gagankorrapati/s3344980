@@ -30,6 +30,9 @@ object AppModule {
     fun providesFirestore() : FirebaseFirestore = Firebase.firestore
 
     @Provides
+    fun providesStorage() : Firebase
+
+    @Provides
     fun providesRetrofit () : Retrofit {
         val retrofit = Retrofit.Builder()
             .baseUrl("https://api.api-ninjas.com/")

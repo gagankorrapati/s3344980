@@ -4,10 +4,10 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -58,8 +58,6 @@ fun ProfileScreen(navController: NavController, vm: MainViewModel) {
         context.packageName + ".provider", imageFile
     )
 
-
-
     val cameraLaunch =
         rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()){
             takenImageUri = uri
@@ -82,13 +80,6 @@ fun ProfileScreen(navController: NavController, vm: MainViewModel) {
     }
 
 
-
-
-
-    var capturedImageUri by remember {
-        mutableStateOf<Uri>(Uri.EMPTY)
-    }
-
     Scaffold(
         topBar = {
             TopAppBar(title = {
@@ -106,10 +97,10 @@ fun ProfileScreen(navController: NavController, vm: MainViewModel) {
         }
         Column(modifier = Modifier
             .fillMaxSize()
-            .padding(top = 20.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+            .padding(top = 150.dp), horizontalAlignment = Alignment.CenterHorizontally) {
             if (userData!!.image.isNotEmpty()) {
                 AsyncImage(
-                    model = userData?.image,
+                    model = userData.image,
                     contentDescription = null,
                     contentScale = ContentScale.FillWidth,
                     placeholder = painterResource(
@@ -131,6 +122,22 @@ fun ProfileScreen(navController: NavController, vm: MainViewModel) {
                             }
                         }
                 )
+            }
+            else{
+                Image(painter = painterResource(id = R.drawable.cat), contentDescription = null,
+                    modifier = Modifier.clickable {
+                        val permissionCheckResult =
+                            ContextCompat.checkSelfPermission(
+                                context,
+                                Manifest.permission.CAMERA
+                            )
+
+                        if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
+                            cameraLaunch.launch(uri)
+                        } else {
+                            permissionLauncher.launch(Manifest.permission.CAMERA)
+                        }
+                    })
             }
         }
     }
