@@ -191,13 +191,21 @@ class MainViewModel @Inject constructor(
     }
 
     fun editName(context : Context, name: String){
+        isLoading.value = true
         firestore.collection("users").document(auth.currentUser!!.uid)
             .update("name", name).addOnSuccessListener {
+                getUserData(auth.currentUser!!.uid)
                 isLoading.value = false
             }
             .addOnFailureListener {
                 isLoading.value = false
                 Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
             }
+    }
+
+    fun logOut(){
+        auth.signOut()
+        isSignedIn.value = false
+        userData = null
     }
 }

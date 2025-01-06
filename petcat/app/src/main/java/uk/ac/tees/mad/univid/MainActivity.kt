@@ -6,6 +6,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -32,8 +36,11 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            PetCatTheme {
-                AppNavigation()
+            var theme by remember{
+                mutableStateOf(false)
+            }
+            PetCatTheme(darkTheme = theme) {
+                AppNavigation(changeTheme = {theme = !theme})
             }
         }
     }
@@ -64,7 +71,7 @@ sealed class AppNavigationComponent(val route: String) {
 
 
 @Composable
-fun AppNavigation() {
+fun AppNavigation(changeTheme:() -> Unit) {
     val vm: MainViewModel = viewModel()
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = AppNavigationComponent.SplashScreen.route) {
@@ -100,7 +107,7 @@ fun AppNavigation() {
             FavouriteScreen(navController, vm)
         }
         composable(AppNavigationComponent.ProfileScreen.route) {
-            ProfileScreen(navController, vm)
+            ProfileScreen(navController, vm, changeTheme)
         }
     }
 }
