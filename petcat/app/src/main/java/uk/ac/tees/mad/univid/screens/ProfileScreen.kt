@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -35,6 +36,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -205,7 +207,7 @@ fun ProfileScreen(navController: NavController, vm: MainViewModel, changeTheme: 
                 Button(onClick = {
                     vm.logOut()
                     navigateWithoutBackStack(navController, AppNavigationComponent.LoginScreen)
-                }) {
+                }, colors = ButtonDefaults.buttonColors(Color.Red)) {
                     Text(text = "Log Out")
                 }
             }
@@ -218,10 +220,10 @@ fun ProfileScreen(navController: NavController, vm: MainViewModel, changeTheme: 
 }
 
 fun Context.makeImageFile(): File {
-    val timeStamp = SimpleDateFormat("yyyy_MM_dd_HH:mm:ss").format(Date())
-    val imageFileName = "JPEG_" + timeStamp + "_"
+    val time = SimpleDateFormat("yyyy_MM_dd_HH:mm:ss").format(Date())
+    val imageFile = "JPEG_" + time + "_"
     val image = File.createTempFile(
-        imageFileName,
+        imageFile,
         ".jpg",
         externalCacheDir
     )
