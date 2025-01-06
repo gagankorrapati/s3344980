@@ -203,8 +203,10 @@ fun ProfileScreen(navController: NavController, vm: MainViewModel, changeTheme: 
                     }
                 }
                 Spacer(modifier = Modifier.height(20.dp))
-                Text(text = userData?.name ?: "User", fontSize = 20.sp, fontFamily = poppins,
-                    fontWeight = FontWeight.SemiBold)
+                Text(
+                    text = userData?.name ?: "User", fontSize = 20.sp, fontFamily = poppins,
+                    fontWeight = FontWeight.SemiBold
+                )
                 Spacer(modifier = Modifier.height(10.dp))
                 Text(text = userData?.email ?: "User", fontSize = 15.sp, fontFamily = poppins)
                 Spacer(modifier = Modifier.height(40.dp))
@@ -213,11 +215,15 @@ fun ProfileScreen(navController: NavController, vm: MainViewModel, changeTheme: 
                     .clickable {
                         isEditVisible.value = true
                     }) {
-                    Icon(imageVector = Icons.Rounded.Edit, contentDescription = "edit profile",
-                        modifier = Modifier.size(25.dp))
+                    Icon(
+                        imageVector = Icons.Rounded.Edit, contentDescription = "edit profile",
+                        modifier = Modifier.size(25.dp)
+                    )
                     Spacer(modifier = Modifier.width(28.dp))
-                    Text(text = "Edit Profile", fontSize = 15.sp, fontFamily = poppins,
-                        fontWeight = FontWeight.SemiBold)
+                    Text(
+                        text = "Edit Profile", fontSize = 15.sp, fontFamily = poppins,
+                        fontWeight = FontWeight.SemiBold
+                    )
                     Spacer(modifier = Modifier.weight(1f))
                     Icon(imageVector = Icons.Rounded.KeyboardArrowRight, contentDescription = null)
                 }
@@ -227,11 +233,16 @@ fun ProfileScreen(navController: NavController, vm: MainViewModel, changeTheme: 
                     .clickable {
                         changeTheme()
                     }) {
-                    Icon(painter = painterResource(id = R.drawable.night_mode), contentDescription = "edit profile",
-                        modifier = Modifier.size(25.dp))
+                    Icon(
+                        painter = painterResource(id = R.drawable.night_mode),
+                        contentDescription = "edit profile",
+                        modifier = Modifier.size(25.dp)
+                    )
                     Spacer(modifier = Modifier.width(28.dp))
-                    Text(text = "Change Theme", fontSize = 15.sp, fontFamily = poppins,
-                        fontWeight = FontWeight.SemiBold)
+                    Text(
+                        text = "Change Theme", fontSize = 15.sp, fontFamily = poppins,
+                        fontWeight = FontWeight.SemiBold
+                    )
                     Spacer(modifier = Modifier.weight(1f))
                     Icon(imageVector = Icons.Rounded.KeyboardArrowRight, contentDescription = null)
                 }
@@ -240,12 +251,20 @@ fun ProfileScreen(navController: NavController, vm: MainViewModel, changeTheme: 
                     .width(300.dp)
                     .clickable {
                         vm.logOut()
+                        navController.navigate(AppNavigationComponent.LoginScreen.route) {
+                            popUpTo(0)
+                        }
                     }) {
-                    Icon(painter = painterResource(id = R.drawable.logout), contentDescription = "edit profile",
-                        modifier = Modifier.size(25.dp))
+                    Icon(
+                        painter = painterResource(id = R.drawable.logout),
+                        contentDescription = "edit profile",
+                        modifier = Modifier.size(25.dp)
+                    )
                     Spacer(modifier = Modifier.width(28.dp))
-                    Text(text = "Log Out", fontSize = 15.sp, fontFamily = poppins,
-                        fontWeight = FontWeight.SemiBold)
+                    Text(
+                        text = "Log Out", fontSize = 15.sp, fontFamily = poppins,
+                        fontWeight = FontWeight.SemiBold
+                    )
                     Spacer(modifier = Modifier.weight(1f))
                     Icon(imageVector = Icons.Rounded.KeyboardArrowRight, contentDescription = null)
                 }
