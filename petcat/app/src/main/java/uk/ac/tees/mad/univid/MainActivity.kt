@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -74,40 +75,46 @@ sealed class AppNavigationComponent(val route: String) {
 fun AppNavigation(changeTheme:() -> Unit) {
     val vm: MainViewModel = viewModel()
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = AppNavigationComponent.SplashScreen.route) {
-        composable(AppNavigationComponent.SplashScreen.route) {
-            SplashScreen(vm, navController)
-        }
-        composable(AppNavigationComponent.LoginScreen.route) {
-            LoginScreen(navController, vm)
-        }
-        composable(AppNavigationComponent.RegisterScreen.route) {
-            RegisterScreen(navController, vm)
-        }
-        composable(AppNavigationComponent.HomeScreen.route) {
-            HomeScreen(vm, navController)
-        }
-        composable(
-            AppNavigationComponent.DetailScreen.route,
-            arguments = listOf(navArgument("petItem") { type = NavType.StringType })
-        ) { backStackEntry ->
-            val petItemJson = backStackEntry.arguments?.getString("petItem")
-            val petItem = gson.fromJson(Uri.decode(petItemJson), PetItem::class.java)
-            DetailScreen(petItem, navController, vm)
-        }
-        composable(
-            AppNavigationComponent.OfflineDetailScreen.route,
-            arguments = listOf(navArgument("petItemDB") { type = NavType.StringType })
-        ) { backStackEntry ->
-            val petItemJson = backStackEntry.arguments?.getString("petItemDB")
-            val petItemDB = gson.fromJson(Uri.decode(petItemJson), PetItemDB::class.java)
-            OfflineDetailScreen(petItemDB, navController, vm)
-        }
-        composable(AppNavigationComponent.FavouriteScreen.route) {
-            FavouriteScreen(navController, vm)
-        }
-        composable(AppNavigationComponent.ProfileScreen.route) {
-            ProfileScreen(navController, vm, changeTheme)
+    Surface {
+
+        NavHost(
+            navController = navController,
+            startDestination = AppNavigationComponent.SplashScreen.route
+        ) {
+            composable(AppNavigationComponent.SplashScreen.route) {
+                SplashScreen(vm, navController)
+            }
+            composable(AppNavigationComponent.LoginScreen.route) {
+                LoginScreen(navController, vm)
+            }
+            composable(AppNavigationComponent.RegisterScreen.route) {
+                RegisterScreen(navController, vm)
+            }
+            composable(AppNavigationComponent.HomeScreen.route) {
+                HomeScreen(vm, navController)
+            }
+            composable(
+                AppNavigationComponent.DetailScreen.route,
+                arguments = listOf(navArgument("petItem") { type = NavType.StringType })
+            ) { backStackEntry ->
+                val petItemJson = backStackEntry.arguments?.getString("petItem")
+                val petItem = gson.fromJson(Uri.decode(petItemJson), PetItem::class.java)
+                DetailScreen(petItem, navController, vm)
+            }
+            composable(
+                AppNavigationComponent.OfflineDetailScreen.route,
+                arguments = listOf(navArgument("petItemDB") { type = NavType.StringType })
+            ) { backStackEntry ->
+                val petItemJson = backStackEntry.arguments?.getString("petItemDB")
+                val petItemDB = gson.fromJson(Uri.decode(petItemJson), PetItemDB::class.java)
+                OfflineDetailScreen(petItemDB, navController, vm)
+            }
+            composable(AppNavigationComponent.FavouriteScreen.route) {
+                FavouriteScreen(navController, vm)
+            }
+            composable(AppNavigationComponent.ProfileScreen.route) {
+                ProfileScreen(navController, vm, changeTheme)
+            }
         }
     }
 }
