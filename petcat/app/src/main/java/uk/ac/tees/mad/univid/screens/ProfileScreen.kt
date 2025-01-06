@@ -11,18 +11,27 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.ArrowForward
+import androidx.compose.material.icons.rounded.Edit
+import androidx.compose.material.icons.rounded.KeyboardArrowRight
+import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -42,6 +51,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.navigation.NavController
@@ -89,11 +99,6 @@ fun ProfileScreen(navController: NavController, vm: MainViewModel, changeTheme: 
     }
 
     Scaffold(
-        topBar = {
-            TopAppBar(title = {
-                Text(text = "Profile", fontFamily = poppins, fontWeight = FontWeight.Bold)
-            })
-        },
         bottomBar = {
             BottomNavigationBar(navController = navController)
         }
@@ -105,10 +110,13 @@ fun ProfileScreen(navController: NavController, vm: MainViewModel, changeTheme: 
                     .padding(it)
             ) {
                 Text(
-                    text = "Hello ${userData?.name ?: "User"}",
+                    text = "Profile",
+                    fontSize = 25.sp,
                     fontFamily = poppins,
                     fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.padding(15.dp)
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(top = 35.dp)
                 )
             }
 
@@ -144,7 +152,7 @@ fun ProfileScreen(navController: NavController, vm: MainViewModel, changeTheme: 
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(top = 180.dp),
+                    .padding(top = 150.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 userData?.let { data ->
@@ -194,22 +202,54 @@ fun ProfileScreen(navController: NavController, vm: MainViewModel, changeTheme: 
                         )
                     }
                 }
-
+                Spacer(modifier = Modifier.height(20.dp))
+                Text(text = userData?.name ?: "User", fontSize = 20.sp, fontFamily = poppins,
+                    fontWeight = FontWeight.SemiBold)
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(text = userData?.email ?: "User", fontSize = 15.sp, fontFamily = poppins)
                 Spacer(modifier = Modifier.height(40.dp))
-                Button(onClick = { isEditVisible.value = true }) {
-                    Text(text = "Edit Profile")
+                Row(modifier = Modifier
+                    .width(300.dp)
+                    .clickable {
+                        isEditVisible.value = true
+                    }) {
+                    Icon(imageVector = Icons.Rounded.Edit, contentDescription = "edit profile",
+                        modifier = Modifier.size(25.dp))
+                    Spacer(modifier = Modifier.width(28.dp))
+                    Text(text = "Edit Profile", fontSize = 15.sp, fontFamily = poppins,
+                        fontWeight = FontWeight.SemiBold)
+                    Spacer(modifier = Modifier.weight(1f))
+                    Icon(imageVector = Icons.Rounded.KeyboardArrowRight, contentDescription = null)
                 }
-                Spacer(modifier = Modifier.height(20.dp))
-                Button(onClick = { changeTheme() }) {
-                    Text(text = "Change Theme")
+                Spacer(modifier = Modifier.height(30.dp))
+                Row(modifier = Modifier
+                    .width(300.dp)
+                    .clickable {
+                        changeTheme()
+                    }) {
+                    Icon(painter = painterResource(id = R.drawable.night_mode), contentDescription = "edit profile",
+                        modifier = Modifier.size(25.dp))
+                    Spacer(modifier = Modifier.width(28.dp))
+                    Text(text = "Change Theme", fontSize = 15.sp, fontFamily = poppins,
+                        fontWeight = FontWeight.SemiBold)
+                    Spacer(modifier = Modifier.weight(1f))
+                    Icon(imageVector = Icons.Rounded.KeyboardArrowRight, contentDescription = null)
                 }
-                Spacer(modifier = Modifier.height(20.dp))
-                Button(onClick = {
-                    vm.logOut()
-                    navigateWithoutBackStack(navController, AppNavigationComponent.LoginScreen)
-                }, colors = ButtonDefaults.buttonColors(Color.Red)) {
-                    Text(text = "Log Out")
+                Spacer(modifier = Modifier.height(30.dp))
+                Row(modifier = Modifier
+                    .width(300.dp)
+                    .clickable {
+                        vm.logOut()
+                    }) {
+                    Icon(painter = painterResource(id = R.drawable.logout), contentDescription = "edit profile",
+                        modifier = Modifier.size(25.dp))
+                    Spacer(modifier = Modifier.width(28.dp))
+                    Text(text = "Log Out", fontSize = 15.sp, fontFamily = poppins,
+                        fontWeight = FontWeight.SemiBold)
+                    Spacer(modifier = Modifier.weight(1f))
+                    Icon(imageVector = Icons.Rounded.KeyboardArrowRight, contentDescription = null)
                 }
+
             }
 
             if (isLoading.value) {
