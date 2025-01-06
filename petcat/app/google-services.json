@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "843036691038",
-    "project_id": "pet-cat-dc655",
+    "project_number": "677336534865",
+    "project_id": "petcat-c9d1e",
     "storage_bucket": "pet-cat-dc655.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:843036691038:android:7a39085e0feed7550cc2cf",
+        "mobilesdk_app_id": "1:677336534865:android:b44a1ff5c634e90b628d70",
         "android_client_info": {
           "package_name": "uk.ac.tees.mad.univid"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDseIwu5PWg9xZWz6H6ROuz2HabLTjn8sA"
+          "current_key": "AIzaSyAobl62u_ZfdN9FhI6z0ZCDO3hYG_0BcCg"
         }
       ],
       "services": {
